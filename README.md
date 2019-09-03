@@ -1,44 +1,28 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Simple Chat App
+An app that connects to a websocket server and allows people to send/receive chat messages.
 
-## Available Scripts
+The server is separated from the client, therefore to test connections to the server, proxy configuration is used to allow the `create-react-app` dev server to connect to the server.
 
-In the project directory, you can run:
+---
+## Requirements
+### Server
+1. ✅ Sends received messages to all connected clients (no rooms).
+2. ✅ If a client is silent for more than a certain (configurable) amount of time, it is
+disconnected; a message about the event (e.g. "John was disconnected due to
+inactivity") is sent to all connected clients.
+3. ✅ If a client is disconnected, but not due to inactivity, a different message is sent (e.g.
+"John left the chat, connection lost" instead.)
+4. ✅ Doesn't allow multiple active users with the same nickname.
+5. 🤔 Validates data received over the network.
+6. ✅ Terminates gracefully upon receiving SIGINT or SIGTERM signals.
+7. ✅ Provide readable logging solution
 
-### `npm start`
+### Client
+1. Has two pages ​​ landing page (shown when not connected to the server) and chat (shown only when connected to the server).
+2. Landing page has a box to enter nickname, a button to connect, and also displays feedback like 'Failed to connect. Nickname already taken.', 'Server unavailable.' or 'Disconnected by the server due to inactivity.'.
+3. Chat page displays messages from the server together with the sender's nickname (but no messages from before the user's current session started), a box to enter a message, a button to send it, and a button to disconnect from the server.
+4. Does not have any inactivity timeouts.
+5. Should display landing page if it's disconnected from the server.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### UI/UX
+1. Feel free to design/define your own UI and UX
