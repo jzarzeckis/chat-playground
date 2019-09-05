@@ -1,35 +1,35 @@
-export interface BroadcastMessage {
+export interface IBroadcastMessage {
   type: 'message';
   author: string;
   message: string;
 }
 
-export interface ClientMessage {
+export interface IClientMessage {
   type: 'send';
   message: string;
 }
 
-export interface NotificationMessage {
+export interface INotificationMessage {
   type: 'info';
   message: 'authenticated' | 'inactivityTimeout' | 'shutdown';
 }
 
-export interface RoomEvent {
+export interface IRoomEvent {
   type: 'roomevent';
   event: 'join' | 'leave' | 'timeout';
   member: string;
 }
 
-export interface ClientAuthentication {
+export interface IClientAuthentication {
   type: 'authenticate';
   name: string;
 }
 
-export interface ErrorMessage {
+export interface IErrorMessage {
   type: 'error';
   message: string;
 }
 
-export type ServerTransmission = BroadcastMessage | ErrorMessage | NotificationMessage | RoomEvent;
-export type ClientTransmission = ClientMessage | ClientAuthentication;
+export type ServerTransmission = IBroadcastMessage | IErrorMessage | INotificationMessage | IRoomEvent;
+export type ClientTransmission = IClientMessage | IClientAuthentication;
 export type Transmission = ServerTransmission | ClientTransmission;
