@@ -1,13 +1,16 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import InputBase from '@material-ui/core/InputBase';
 import { ChatItem } from '../interfaces/client';
 import { ChatMessage } from './chat/ChatMessage';
 import { RoomEvent } from './chat/RoomEvent';
+import IconButton from '@material-ui/core/IconButton';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SendIcon from '@material-ui/icons/Send'
 
 const useStyles = makeStyles(theme => ({
   messagePaper: {
@@ -17,7 +20,10 @@ const useStyles = makeStyles(theme => ({
     top: 'auto',
     bottom: 0
   },
-  list: {}
+  textInput: {
+    flexGrow: 1
+  },
+  actions: {}
 }));
 
 const dummy: ChatItem[] = [
@@ -29,7 +35,7 @@ export const Chat: React.FC = () => {
   const classes = useStyles();
   return <>
     <Paper className={classes.messagePaper}>
-      <List className={classes.list}>
+      <List>
         {dummy.map((item, idx) => item.type === 'message' ?
           <ChatMessage key={idx} {...item} /> :
           <RoomEvent key={idx} {...item} />
@@ -37,7 +43,18 @@ export const Chat: React.FC = () => {
       </List>
     </Paper>
     <AppBar position="fixed" className={classes.appBar}>
-      <Toolbar>Hello world</Toolbar>
+      <Toolbar>
+        <div className={classes.textInput}>
+          <InputBase
+            autoFocus
+            placeholder="Enter message..."
+          />
+        </div>
+        <div className={classes.actions}>
+          <IconButton aria-label="Send"><SendIcon /></IconButton>
+          <IconButton aria-label="Exit chat"><ExitToAppIcon /></IconButton>
+        </div>
+      </Toolbar>
     </AppBar>
   </>;
 };
