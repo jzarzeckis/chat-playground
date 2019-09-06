@@ -48,6 +48,12 @@ const ChatPure: React.FC<ReturnType<typeof stateToProps> & ReturnType<typeof dis
       send(inputText);
     }
   }
+  function keyPress(e: React.KeyboardEvent) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
 
   return <>
     <Paper className={classes.messagePaper}>
@@ -65,6 +71,7 @@ const ChatPure: React.FC<ReturnType<typeof stateToProps> & ReturnType<typeof dis
             autoFocus
             placeholder="Enter message..."
             onChange={(e) => updateInput(e.target.value)}
+            onKeyDown={keyPress}
             value={inputText}
           />
         </div>
