@@ -10,7 +10,7 @@ import { Dispatch } from '../interfaces/client';
 import { login } from '../state/actions';
 
 function dispatchProps(dispatch: Dispatch) {
-  return { login(name: string) { return dispatch(login.request(name)) } }
+  return { login(name: string) { return dispatch(login(name)) } }
 }
 
 const useStyles = makeStyles(theme => ({

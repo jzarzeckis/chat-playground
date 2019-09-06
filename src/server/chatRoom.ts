@@ -16,29 +16,35 @@ class Member {
     private room: ChatRoom
   ) {
     ws.on('message', (msg: string) => {
-      const data = JSON.parse(msg) as ClientTransmission;
-      if (data.type === 'authenticate') {
-        // Already authenticated members shouldn't re-authenticate
-        if (this.name !== null) {
-          this.send({ type: 'error', message: 'You are already authenticated' });
-          return;
+      try {
+        const data = JSON.parse(msg) as ClientTransmission;
+        if (data.type === 'authenticate') {
+          // Already authenticated members shouldn't re-authenticate
+          if (this.name !== null) {
+            this.send({ type: 'error', message: 'You are already authenticated' });
+            return;
+          }
+          if (this.room.nameExists(data.name)) {
+            this.send({ type: 'error', message: 'Such name has already been taken' });
+            return;
+          }
+          logger.debug('User authenticated: %s', this.name);
+          this.room.broadcast({ type: 'roomevent', event: 'join', member: data.name });
+          this.name = data.name;
+          this.send({ type: 'authenticated', member: this.name });
+          this.lastActivity = Date.now();
+        } else if (data.type === 'send') {
+          if (this.name === null) {
+            this.send({ type: 'error', message: 'Unauthenticated users can\'t send messages'});
+            return;
+          }
+          this.room.broadcast({ type: 'message', author: this.name, message: data.message });
+          this.lastActivity = Date.now();
+        } else {
+          logger.error('Invalid message type sent by client');
         }
-        if (this.room.nameExists(data.name)) {
-          this.send({ type: 'error', message: 'Such name has already been taken' });
-          return;
-        }
-        logger.debug('User authenticated: %s', this.name);
-        this.room.broadcast({ type: 'roomevent', event: 'join', member: data.name });
-        this.name = data.name;
-        this.send({ type: 'info', message: 'authenticated' });
-        this.lastActivity = Date.now();
-      } else if (data.type === 'send') {
-        if (this.name === null) {
-          this.send({ type: 'error', message: 'Unauthenticated users can\'t send messages'});
-          return;
-        }
-        this.room.broadcast({ type: 'message', author: this.name, message: data.message });
-        this.lastActivity = Date.now();
+      } catch (err) {
+        logger.error('Invalid JSON sent by client');
       }
     });
 
@@ -72,11 +78,10 @@ class Member {
     if (name) { // Users may get disconnected before they got authenticated
       this.room.broadcast({ type: 'roomevent', event: 'timeout', member: name });
     }
-    
+
     this.ws.close();
   }
 }
-
 
 export class ChatRoom {
   private members: Member[] = [];

@@ -11,7 +11,12 @@ export interface IClientMessage {
 
 export interface INotificationMessage {
   type: 'info';
-  message: 'authenticated' | 'inactivityTimeout' | 'shutdown';
+  message: 'inactivityTimeout' | 'shutdown' | 'disconnected';
+}
+
+export interface IAuthenticationConfirmation {
+  type: 'authenticated';
+  member: string;
 }
 
 export interface IRoomEvent {
@@ -30,6 +35,8 @@ export interface IErrorMessage {
   message: string;
 }
 
-export type ServerTransmission = IBroadcastMessage | IErrorMessage | INotificationMessage | IRoomEvent;
+export type ServerTransmission = IBroadcastMessage |
+  IErrorMessage | INotificationMessage | IRoomEvent |
+  IAuthenticationConfirmation;
 export type ClientTransmission = IClientMessage | IClientAuthentication;
 export type Transmission = ServerTransmission | ClientTransmission;

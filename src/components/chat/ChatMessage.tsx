@@ -1,7 +1,6 @@
 import { Color } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import * as colors from '@material-ui/core/colors';
-import { CommonColors } from '@material-ui/core/colors/common';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -25,8 +24,8 @@ const avatarColors: AvatarStyles = Object.entries(colors)
 const possibleAvatarClasses = Object.keys(avatarColors) as AvatarClass[];
 
 /**
- * Maps the name to one of the avatar classes, so that the same person would always get
- * in the same color
+ * Maps the name to one of the avatar classes (chosen semi-randomly),
+ * so that the same person would always get in the same color
  * @param name Name of the message author
  */
 function memberAvatarClass(name: string): AvatarClass {

@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import InputBase from '@material-ui/core/InputBase';
-import { ChatItem } from '../interfaces/client';
+import { Dispatch, IState } from '../interfaces/client';
 import { ChatMessage } from './chat/ChatMessage';
 import { RoomEvent } from './chat/RoomEvent';
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SendIcon from '@material-ui/icons/Send'
+import { connect } from 'react-redux';
+import { logout, clientMessage } from '../state/actions';
 
 const useStyles = makeStyles(theme => ({
   messagePaper: {
@@ -26,17 +28,31 @@ const useStyles = makeStyles(theme => ({
   actions: {}
 }));
 
-const dummy: ChatItem[] = [
-  { type: 'message', author: 'Judy', message: 'Welcome to the chat' },
-  { type: 'roomevent', event: 'leave', member: 'Somebody' }
-]
+function stateToProps({ messages }: IState) {
+  return { messages };
+}
 
-export const Chat: React.FC = () => {
+function dispatchToProps(dispatch: Dispatch) {
+  return {
+    logout() { return dispatch(logout())},
+    send(message: string) { return dispatch(clientMessage({ type: 'send', message })) },
+  };
+}
+
+const ChatPure: React.FC<ReturnType<typeof stateToProps> & ReturnType<typeof dispatchToProps>> = ({ messages, logout, send }) => {
   const classes = useStyles();
+  const [ inputText, updateInput ] = useState('');
+  function sendMessage() {
+    if (inputText) {
+      updateInput('');
+      send(inputText);
+    }
+  }
+
   return <>
     <Paper className={classes.messagePaper}>
       <List>
-        {dummy.map((item, idx) => item.type === 'message' ?
+        {messages.map((item, idx) => item.type === 'message' ?
           <ChatMessage key={idx} {...item} /> :
           <RoomEvent key={idx} {...item} />
         )}
@@ -48,13 +64,17 @@ export const Chat: React.FC = () => {
           <InputBase
             autoFocus
             placeholder="Enter message..."
+            onChange={(e) => updateInput(e.target.value)}
+            value={inputText}
           />
         </div>
         <div className={classes.actions}>
-          <IconButton aria-label="Send"><SendIcon /></IconButton>
-          <IconButton aria-label="Exit chat"><ExitToAppIcon /></IconButton>
+          <IconButton onClick={sendMessage} aria-label="Send"><SendIcon /></IconButton>
+          <IconButton onClick={() => logout()} aria-label="Exit chat"><ExitToAppIcon /></IconButton>
         </div>
       </Toolbar>
     </AppBar>
   </>;
 };
+
+export const Chat = connect(stateToProps, dispatchToProps)(ChatPure);
