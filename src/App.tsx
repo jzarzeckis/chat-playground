@@ -25,11 +25,11 @@ function redirectBasedOnAuth(
   Component: React.ComponentType,
   redirectPath: string
 ) {
-  return connect(mapStateToAuth)((({ isAuthenticated }) => <>{
+  return connect(mapStateToAuth)((({ isAuthenticated }) =>
     isAuthenticated === shouldbeAuthenticated ?
       <Component /> :
       <Redirect to={redirectPath} />
-  }</>) as React.FC<ReturnType<typeof mapStateToAuth>>);
+  ) as React.FC<ReturnType<typeof mapStateToAuth>>);
 }
 
 
