@@ -9,6 +9,8 @@ import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { IState } from './interfaces/client';
 import { connect } from 'react-redux';
+import { SnackbarProvider } from 'notistack';
+import { Notifications } from './components/Notifications';
 
 const theme = createMuiTheme({
   palette: { type: 'dark' }
@@ -30,18 +32,22 @@ function redirectBasedOnAuth(
   }</>) as React.FC<ReturnType<typeof mapStateToAuth>>);
 }
 
+
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Container>
-        <CssBaseline />
-        <Router>
-          <Route exact path="/" component={redirectBasedOnAuth(false, Login, '/chat')} />
-          <Route path="/chat" component={redirectBasedOnAuth(true, Chat, '/')} />
-        </Router>
-      </Container>
+      <SnackbarProvider>
+        <Container>
+          <CssBaseline />
+          <Router>
+            <Route exact path="/" component={redirectBasedOnAuth(false, Login, '/chat')} />
+            <Route path="/chat" component={redirectBasedOnAuth(true, Chat, '/')} />
+          </Router>
+        </Container>
+        <Notifications />
+      </SnackbarProvider>
     </ThemeProvider>
-  );
+);
 }
 
 export default App;

@@ -1,6 +1,6 @@
 import { getType, Reducer } from 'typesafe-actions';
 import { Action, IState  } from '../interfaces/client';
-import { logout, serverMessage } from './actions';
+import { dismissSnackbar, logout, serverMessage } from './actions';
 
 const initialState: IState = {
   messages: [],
@@ -23,6 +23,8 @@ export const reducer: Reducer<IState, Action> = (state = initialState, action) =
       } else if (msg.type === 'message' || msg.type === 'roomevent') {
         return { ...state, messages: [...state.messages, msg]};
       }
+    case getType(dismissSnackbar):
+      return { ...state, snackbarContent: [] };
   }
   return state;
 };

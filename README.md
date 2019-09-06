@@ -19,10 +19,22 @@ inactivity") is sent to all connected clients.
 
 ### Client
 1. ✅ Has two pages ​​ landing page (shown when not connected to the server) and chat (shown only when connected to the server).
-2. Landing page has a box to enter nickname, a button to connect, and also displays feedback like 'Failed to connect. Nickname already taken.', 'Server unavailable.' or 'Disconnected by the server due to inactivity.'.
-3. Chat page displays messages from the server together with the sender's nickname (but no messages from before the user's current session started), a box to enter a message, a button to send it, and a button to disconnect from the server.
+2. Landing page has a box to enter nickname, a button to connect, and also displays feedback like 'Failed to connect. ✅ Nickname already taken.', 'Server unavailable.' or 'Disconnected by the server due to inactivity.'.
+3. ✅ Chat page displays messages from the server together with the sender's nickname (but no messages from before the user's current session started), a box to enter a message, a button to send it, and a button to disconnect from the server.
 4. Does not have any inactivity timeouts.
-5. Should display landing page if it's disconnected from the server.
+5. ✅ Should display landing page if it's disconnected from the server.
 
 ### UI/UX
 1. Feel free to design/define your own UI and UX
+
+---
+## Summary
+I used tried to keep everything type safe, and reuse the message interfaces between client and server. `React`, `typesafe-actions`, `rxjs` together with `redux-obserbable` was used in this example. Most of the async sidefects have been declared in the [`wsEpic.ts`](src/state/wsEpic.ts) file that pipes the redux actions to creating a new websocket and vice-versa received messages to redux actions.
+
+### Room for improvement:
+Of course there's still a lot of room for improvement, and if this was a real world project, here are the things I'd consider:
+* Adding [Marble tests](https://rxjs-dev.firebaseapp.com/guide/testing/marble-testing) for the epics
+* Ensure app is scrolled whenever a new message arrives
+* Add some spring based animations to messages arriving, to make them more exciting
+* Activity timeouts were implemented on server, but adding handling form ping should be rather straight forward by adding an `interval` with ping messages to the `wsEpic.ts`
+* Forwarding redux actions to components directly isn't really possible, so usage of `notistack` wasn't  great as it's a hook that allows one to trigger snackbar messages, but my events mostly come from Redux. I could replace this with my own solution.

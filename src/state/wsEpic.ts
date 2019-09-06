@@ -1,5 +1,6 @@
 import { Epic } from 'redux-observable';
-import { endWith, exhaustMap, filter, map, pluck, startWith, takeUntil } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { endWith, filter, map, pluck, startWith, switchMap, takeUntil, catchError } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
 import { isActionOf } from 'typesafe-actions';
 import { Action, IState } from '../interfaces/client';
@@ -8,7 +9,7 @@ import { clientMessage, login, logout, serverMessage } from './actions';
 
 export const wsEpic: Epic<Action, Action, IState> = (action$) => action$.pipe(
   filter(isActionOf(login)),
-  exhaustMap(({ payload: nickname }) => {
+  switchMap(({ payload: nickname }) => {
     const subject = webSocket(`ws://${window.location.host}/chatWs`);
     // const subject = webSocket('ws://localhost:4000/chatWs');
 
@@ -24,6 +25,7 @@ export const wsEpic: Epic<Action, Action, IState> = (action$) => action$.pipe(
       takeUntil(action$.pipe(filter(isActionOf(logout)))),
       map((msg) => serverMessage(msg as ServerTransmission)),
       startWith(clientMessage({ type: 'authenticate', name: nickname })),
+      catchError((err) => of(serverMessage({ type: 'error', message: err.message }))),
       endWith(serverMessage({ type: 'info', message: 'disconnected' })),
     );
   }),

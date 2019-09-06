@@ -16,7 +16,8 @@ import { logout, clientMessage } from '../state/actions';
 
 const useStyles = makeStyles(theme => ({
   messagePaper: {
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(8),
   },
   appBar: {
     top: 'auto',
