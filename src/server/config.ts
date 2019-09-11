@@ -1,3 +1,5 @@
 export const config = {
-  inactivityTimeout: 60000,
+  clientConnectionTimeout: 2000,
+  inactivityTimeout: 500,
+  pingInterval: 5000,
 };

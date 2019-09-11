@@ -19,7 +19,11 @@ export const reducer: Reducer<IState, Action> = (state = initialState, action) =
       } else if (msg.type === 'error') {
         return { ...state, snackbarContent: [...state.snackbarContent, msg] };
       } else if (msg.type === 'info' && msg.message === 'disconnected') {
-        return { messages: [], name: null, snackbarContent: [{ type: 'error', message: 'You have been disconnected' }]};
+        return { messages: [], name: null, snackbarContent: [{
+          isInfo: true,
+          message: 'You are now disconnected',
+          type: 'error',
+        }]};
       } else if (msg.type === 'message' || msg.type === 'roomevent') {
         return { ...state, messages: [...state.messages, msg]};
       }

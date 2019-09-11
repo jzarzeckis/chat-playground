@@ -27,7 +27,7 @@ const NotificationsBC: React.FC<
           notificationsShown.delete(n);
           updateNotificationsShown(notificationsShown);
         },
-        variant: 'warning',
+        variant: n.isInfo ? 'info' : 'warning',
       });
       notificationsShown.add(n);
     });

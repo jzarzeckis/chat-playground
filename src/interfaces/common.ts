@@ -37,6 +37,7 @@ export interface IClientAuthentication {
 export interface IErrorMessage {
   type: 'error';
   message: string;
+  isInfo?: boolean;
 }
 
 export type ServerTransmission = IBroadcastMessage |
