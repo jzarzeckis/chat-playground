@@ -27,6 +27,7 @@ export const reducer: Reducer<IState, Action> = (state = initialState, action) =
       } else if (msg.type === 'message' || msg.type === 'roomevent') {
         return { ...state, messages: [...state.messages, msg]};
       }
+      break;
     case getType(dismissSnackbar):
       return { ...state, snackbarContent: state.snackbarContent.filter((x) => x !== action.payload) };
   }

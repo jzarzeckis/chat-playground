@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SendIcon from '@material-ui/icons/Send';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 
 import { Dispatch, IState } from '../interfaces/client';
@@ -41,7 +41,7 @@ function dispatchToProps(dispatch: Dispatch) {
   };
 }
 
-const ChatPure: React.FC<ReturnType<typeof stateToProps> & ReturnType<typeof dispatchToProps>> =
+const ChatFC: React.FC<ReturnType<typeof stateToProps> & ReturnType<typeof dispatchToProps>> =
   ({ logout: dispatchLogout, messages, send }) => {
     const classes = useStyles();
     const [ inputText, updateInput ] = useState('');
@@ -58,13 +58,30 @@ const ChatPure: React.FC<ReturnType<typeof stateToProps> & ReturnType<typeof dis
       }
     }
 
+    // Scroll the last message into view whenever messages list changes
+    const lastMessageRef = useRef(null);
+    useEffect(() => {
+      if (messages.length && lastMessageRef.current) {
+        (lastMessageRef.current as any as HTMLElement).scrollIntoView({
+          behavior: 'smooth',
+        });
+      }
+    }, [ messages ]);
+
     return <>
       <Paper className={classes.messagePaper}>
         { messages.length ?
           <List>
             {messages.map((item, idx) => item.type === 'message' ?
-              <ChatMessage key={idx} {...item} /> :
-              <RoomEvent key={idx} {...item} />,
+              <ChatMessage
+                ref={idx === messages.length - 1 ? lastMessageRef : undefined}
+                key={idx}
+                {...item}
+              /> :
+              <RoomEvent
+                ref={idx === messages.length - 1 ? lastMessageRef : undefined}
+                key={idx} {...item}
+              />,
             )}
           </List> :
           null
@@ -90,4 +107,4 @@ const ChatPure: React.FC<ReturnType<typeof stateToProps> & ReturnType<typeof dis
     </>;
   };
 
-export const Chat = connect(stateToProps, dispatchToProps)(ChatPure);
+export const Chat = connect(stateToProps, dispatchToProps)(ChatFC);

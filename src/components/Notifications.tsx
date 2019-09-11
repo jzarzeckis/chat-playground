@@ -31,7 +31,7 @@ const NotificationsBC: React.FC<
       });
       notificationsShown.add(n);
     });
-  }, [ notifications ]);
+  }, [ notifications, dismiss, enqueueSnackbar, notificationsShown ]);
   return null;
 };
 

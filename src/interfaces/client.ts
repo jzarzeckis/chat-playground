@@ -1,3 +1,4 @@
+import { MutableRefObject } from 'react';
 import { Dispatch as RDispatch } from 'redux';
 import { ActionType } from 'typesafe-actions';
 import * as actions from '../state/actions';

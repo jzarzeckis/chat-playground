@@ -39,6 +39,7 @@ inactivity") is sent to all connected clients.
 ---
 ## Summary
 I used tried to keep everything type safe, and reuse the message interfaces between client and server. `React`, `typesafe-actions`, `rxjs` together with `redux-obserbable` was used in this example. Most of the async sidefects have been declared in the [`wsEpic.ts`](src/state/wsEpic.ts) file that pipes the redux actions to creating a new websocket and vice-versa received messages to redux actions.
+Whenever a new message arrives, window is scrolled to the latest message.
 
 ### Room for improvement:
 Of course there's still a lot of room for improvement, and if this was a real world project, here are the things I'd consider:

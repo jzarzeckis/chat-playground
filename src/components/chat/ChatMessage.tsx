@@ -5,7 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import React, { forwardRef, RefForwardingComponent } from 'react';
 
 import { IBroadcastMessage } from '../../interfaces/common';
 
@@ -37,12 +37,14 @@ function memberAvatarClass(name: string): AvatarClass {
 
 const useStyles = makeStyles(avatarColors);
 
-export const ChatMessage: React.FC<IBroadcastMessage> = ({ author, message }) => {
+const ChatMessageRFC: RefForwardingComponent<any, IBroadcastMessage> = ({ author, message }, ref) => {
   const classes = useStyles();
-  return <ListItem>
+  return <ListItem ref={ref}>
     <ListItemAvatar>
       <Avatar className={classes[memberAvatarClass(author)]}>{author.slice(0, 2).toUpperCase()}</Avatar>
     </ListItemAvatar>
     <ListItemText primary={message} secondary={author} />
   </ListItem>;
 };
+
+export const ChatMessage = forwardRef(ChatMessageRFC);
