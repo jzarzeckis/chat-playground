@@ -9,6 +9,10 @@ export interface IClientMessage {
   message: string;
 }
 
+export interface IClientPing {
+  type: 'ping';
+}
+
 export interface INotificationMessage {
   type: 'info';
   message: 'inactivityTimeout' | 'shutdown' | 'disconnected';
@@ -38,5 +42,5 @@ export interface IErrorMessage {
 export type ServerTransmission = IBroadcastMessage |
   IErrorMessage | INotificationMessage | IRoomEvent |
   IAuthenticationConfirmation;
-export type ClientTransmission = IClientMessage | IClientAuthentication;
+export type ClientTransmission = IClientMessage | IClientAuthentication | IClientPing;
 export type Transmission = ServerTransmission | ClientTransmission;

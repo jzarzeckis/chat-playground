@@ -40,6 +40,8 @@ export class Member {
           }
           this.room.broadcast({ type: 'message', author: this.name, message: data.message });
           this.lastActivity = Date.now();
+        } else if (data.type === 'ping') {
+          this.lastActivity = Date.now();
         } else {
           logger.error('Invalid message type sent by client');
         }
