@@ -28,7 +28,7 @@ export class Member {
             this.send({ type: 'error', message: 'Such name has already been taken' });
             return;
           }
-          logger.debug('User authenticated: %s', this.name);
+          logger.debug('User authenticated: %s', data.name);
           this.room.broadcast({ type: 'roomevent', event: 'join', member: data.name });
           this.name = data.name;
           this.send({ type: 'authenticated', member: this.name });
@@ -72,7 +72,10 @@ export class Member {
   public disconnectDueToTimeout() {
     const name = this.name;
     this.name = null;
-    if (![WebSocket.CLOSED, WebSocket.CLOSING].includes(this.ws.readyState)) {
+    if (this.ws.readyState === WebSocket.CLOSED) {
+      if (name) {
+        this.room.broadcast({ type: 'roomevent', event: 'timeout', member: name });
+      }
       return;
     }
     this.send({type: 'info', message: 'inactivityTimeout' });
@@ -80,7 +83,6 @@ export class Member {
     if (name) { // Users may get disconnected before they got authenticated
       this.room.broadcast({ type: 'roomevent', event: 'timeout', member: name });
     }
-
-    this.ws.close();
+    setTimeout(() => this.ws.close(), 0);
   }
 }

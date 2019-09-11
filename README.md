@@ -28,7 +28,7 @@ inactivity") is sent to all connected clients.
     - ✅ Failed to connect. (Interpreted as timeout when failing to receive authentication response from server)
     - ✅ Nickname already taken.',
     - ✅ Server unavailable. (Interpreted when the websocket connection fails)
-    - 'Disconnected by the server due to inactivity.'.
+    - ✅ Disconnected by the server due to inactivity.'.
 3. ✅ Chat page displays messages from the server together with the sender's nickname (but no messages from before the user's current session started), a box to enter a message, a button to send it, and a button to disconnect from the server.
 4. ✅ Does not have any inactivity timeouts.
 5. ✅ Should display landing page if it's disconnected from the server.
@@ -44,5 +44,4 @@ Whenever a new message arrives, window is scrolled to the latest message.
 ### Room for improvement:
 Of course there's still a lot of room for improvement, and if this was a real world project, here are the things I'd consider:
 * Adding [Marble tests](https://rxjs-dev.firebaseapp.com/guide/testing/marble-testing) for the epics
-* Ensure app is scrolled whenever a new message arrives
 * Add some spring based animations to messages arriving, to make them more exciting

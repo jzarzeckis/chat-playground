@@ -1,3 +1,4 @@
+import { partition } from 'lodash';
 import * as WebSocket from 'ws';
 import { ServerTransmission } from '../interfaces/common';
 import { Member } from './chatMember';
@@ -36,12 +37,12 @@ export class ChatRoom {
 
   private disconnectInactiveUsers() {
     const stale = Date.now() - config.inactivityTimeout;
-    const staleMembers = this.members.filter((m) => m.lastActivity < stale);
+    const [ staleMembers, remainingMembers ] = partition(this.members, (m) => m.lastActivity < stale);
     logger.debug('Disconnecting stale members: %s', staleMembers.map((m) => m.name).join(', '));
     staleMembers.forEach((m) => {
       m.disconnectDueToTimeout();
     });
 
-    this.members = this.members.filter((m) => m.lastActivity >= stale);
+    this.members = remainingMembers;
   }
 }

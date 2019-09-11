@@ -18,6 +18,11 @@ export const reducer: Reducer<IState, Action> = (state = initialState, action) =
         return { ...state, name: msg.member };
       } else if (msg.type === 'error') {
         return { ...state, snackbarContent: [...state.snackbarContent, msg] };
+      } else if (msg.type === 'info' && msg.message === 'inactivityTimeout') {
+        return { ...state, snackbarContent: [...state.snackbarContent, {
+          message: 'Disconnected from server due to inactivity',
+          type: 'error',
+        }]};
       } else if (msg.type === 'info' && msg.message === 'disconnected') {
         return { messages: [], name: null, snackbarContent: [{
           isInfo: true,
