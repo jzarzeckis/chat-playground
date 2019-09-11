@@ -1,7 +1,8 @@
-import { useSnackbar } from 'notistack';
-import React from 'react';
+import { withSnackbar, WithSnackbarProps } from 'notistack';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch, IState } from '../interfaces/client';
+import { IErrorMessage } from '../interfaces/common';
 import { dismissSnackbar } from '../state/actions';
 
 function stateToProps({ snackbarContent: notifications }: IState) {
@@ -9,18 +10,29 @@ function stateToProps({ snackbarContent: notifications }: IState) {
 }
 
 function dispatchToProps(dispatch: Dispatch) {
-  return { dismiss() { return dismissSnackbar(); }};
+  return { dismiss(n: IErrorMessage) { dispatch(dismissSnackbar(n)); }};
 }
 
-const NotificationsBC: React.FC<ReturnType<typeof stateToProps> & ReturnType<typeof dispatchToProps>> =
-  ({ notifications, dismiss }) => {
-    const { enqueueSnackbar } = useSnackbar();
-    // Sorry, I know this is ugly, but I didn't want to re-implement snackbar stacking
-    notifications.forEach((not) => enqueueSnackbar(not.message));
-    if (notifications.length) {
-      setTimeout(() => dismiss());
-    }
-    return <></>;
-  };
+const NotificationsBC: React.FC<
+  WithSnackbarProps &
+  ReturnType<typeof stateToProps> &
+  ReturnType<typeof dispatchToProps>
+> = ({ notifications, dismiss, enqueueSnackbar }) => {
+  const [ notificationsShown, updateNotificationsShown ] = useState(new WeakSet<IErrorMessage>());
+  useEffect(() => {
+    notifications.filter((n) => !notificationsShown.has(n)).forEach((n) => {
+      enqueueSnackbar(n.message, {
+        onClose() {
+          dismiss(n);
+          notificationsShown.delete(n);
+          updateNotificationsShown(notificationsShown);
+        },
+        variant: 'warning',
+      });
+      notificationsShown.add(n);
+    });
+  }, [ notifications ]);
+  return null;
+};
 
-export const Notifications = connect(stateToProps, dispatchToProps)(NotificationsBC);
+export const Notifications = withSnackbar(connect(stateToProps, dispatchToProps)(NotificationsBC));

@@ -24,7 +24,7 @@ export const reducer: Reducer<IState, Action> = (state = initialState, action) =
         return { ...state, messages: [...state.messages, msg]};
       }
     case getType(dismissSnackbar):
-      return { ...state, snackbarContent: [] };
+      return { ...state, snackbarContent: state.snackbarContent.filter((x) => x !== action.payload) };
   }
   return state;
 };

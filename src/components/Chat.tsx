@@ -60,12 +60,15 @@ const ChatPure: React.FC<ReturnType<typeof stateToProps> & ReturnType<typeof dis
 
     return <>
       <Paper className={classes.messagePaper}>
-        <List>
-          {messages.map((item, idx) => item.type === 'message' ?
-            <ChatMessage key={idx} {...item} /> :
-            <RoomEvent key={idx} {...item} />,
-          )}
-        </List>
+        { messages.length ?
+          <List>
+            {messages.map((item, idx) => item.type === 'message' ?
+              <ChatMessage key={idx} {...item} /> :
+              <RoomEvent key={idx} {...item} />,
+            )}
+          </List> :
+          null
+        }
       </Paper>
       <AppBar position='fixed' className={classes.appBar}>
         <Toolbar>

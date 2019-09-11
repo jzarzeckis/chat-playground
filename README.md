@@ -1,6 +1,8 @@
 # Simple Chat App
 An app that connects to a websocket server and allows people to send/receive chat messages.
 
+Call `npm install` before running. Use `npm start` to run the devserver.
+
 The server is separated from the client, therefore to test connections to the server, proxy configuration is used to allow the `create-react-app` dev server to connect to the server.
 
 ---

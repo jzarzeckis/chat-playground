@@ -1,5 +1,5 @@
 import { createStandardAction } from 'typesafe-actions';
-import { ClientTransmission, ServerTransmission } from '../interfaces/common';
+import { ClientTransmission, IErrorMessage, ServerTransmission } from '../interfaces/common';
 
 export const login = createStandardAction('JOIN_ROOM')<string>();
 
@@ -9,4 +9,4 @@ export const serverMessage = createStandardAction('RX')<ServerTransmission>();
 
 export const clientMessage = createStandardAction('TX')<ClientTransmission>();
 
-export const dismissSnackbar = createStandardAction('DISMISS')();
+export const dismissSnackbar = createStandardAction('DISMISS')<IErrorMessage>();
