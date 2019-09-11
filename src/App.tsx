@@ -1,19 +1,19 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import React from 'react';
+import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
 
-import { Login } from './components/Login';
-import { Chat } from './components/Chat';
-import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { IState } from './interfaces/client';
-import { connect } from 'react-redux';
+import { ThemeProvider } from '@material-ui/styles';
 import { SnackbarProvider } from 'notistack';
+import { connect } from 'react-redux';
+import { Chat } from './components/Chat';
+import { Login } from './components/Login';
 import { Notifications } from './components/Notifications';
+import { IState } from './interfaces/client';
 
 const theme = createMuiTheme({
-  palette: { type: 'dark' }
+  palette: { type: 'dark' },
 });
 
 function mapStateToAuth({ name }: IState) {
@@ -23,7 +23,7 @@ function mapStateToAuth({ name }: IState) {
 function redirectBasedOnAuth(
   shouldbeAuthenticated: boolean,
   Component: React.ComponentType,
-  redirectPath: string
+  redirectPath: string,
 ) {
   return connect(mapStateToAuth)((({ isAuthenticated }) =>
     isAuthenticated === shouldbeAuthenticated ?
@@ -32,7 +32,6 @@ function redirectBasedOnAuth(
   ) as React.FC<ReturnType<typeof mapStateToAuth>>);
 }
 
-
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -40,14 +39,14 @@ const App: React.FC = () => {
         <Container>
           <CssBaseline />
           <Router>
-            <Route exact path="/" component={redirectBasedOnAuth(false, Login, '/chat')} />
-            <Route path="/chat" component={redirectBasedOnAuth(true, Chat, '/')} />
+            <Route exact path='/' component={redirectBasedOnAuth(false, Login, '/chat')} />
+            <Route path='/chat' component={redirectBasedOnAuth(true, Chat, '/')} />
           </Router>
         </Container>
         <Notifications />
       </SnackbarProvider>
     </ThemeProvider>
 );
-}
+};
 
 export default App;

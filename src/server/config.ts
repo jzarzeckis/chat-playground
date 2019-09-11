@@ -1,3 +1,3 @@
 export const config = {
-  inactivityTimeout: 60000
+  inactivityTimeout: 60000,
 };

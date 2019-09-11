@@ -1,6 +1,6 @@
 import { Epic } from 'redux-observable';
 import { of } from 'rxjs';
-import { endWith, filter, map, pluck, startWith, switchMap, takeUntil, catchError } from 'rxjs/operators';
+import { catchError, endWith, filter, map, pluck, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
 import { isActionOf } from 'typesafe-actions';
 import { Action, IState } from '../interfaces/client';

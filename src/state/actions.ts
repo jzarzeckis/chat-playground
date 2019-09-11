@@ -1,5 +1,5 @@
 import { createStandardAction } from 'typesafe-actions';
-import { ClientTransmission, ServerTransmission, IErrorMessage } from '../interfaces/common';
+import { ClientTransmission, ServerTransmission } from '../interfaces/common';
 
 export const login = createStandardAction('JOIN_ROOM')<string>();
 
