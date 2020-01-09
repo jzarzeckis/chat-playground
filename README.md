@@ -20,7 +20,7 @@ inactivity") is sent to all connected clients.
 7. ✅ Provide readable logging solution
 
 ### Client
-1. ✅ Has two pages ​​ landing page (shown when not connected to the server) and chat (shown only when connected to the server).
+1. ✅ Has two pages ​​ landing page (shown when not connected to the server) and chat (shown only when connected to the server). 
 2. Landing page has: 
   * ✅ a box to enter nickname,
   * ✅ a button to connect,
