@@ -28,7 +28,7 @@
     "typesafe-actions": "^4.4.2",
     "typescript": "3.6.2",
     "winston": "^3.2.1",
-    "ws": "^7.1.2"
+    "ws": "^7.4.6"
   },
   "scripts": {
     "start": "ts-node -P src/server/tsconfig.json src/server/index.ts & react-scripts start",
